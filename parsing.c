@@ -6,15 +6,15 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 18:56:10 by andjenna          #+#    #+#             */
-/*   Updated: 2024/09/25 18:56:34 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:50:36 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-int is_digit(char *str)
+int	is_digit(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -26,10 +26,10 @@ int is_digit(char *str)
 	return (1);
 }
 
-long ft_atol(char *str)
+long	ft_atol(char *str)
 {
-	long nbr;
-	int neg;
+	long	nbr;
+	int		neg;
 
 	nbr = 0;
 	neg = 1;
@@ -48,13 +48,14 @@ long ft_atol(char *str)
 	}
 	return (neg * nbr);
 }
-int parse_args(char **av)
+
+int	ft_check_params(char **av)
 {
-	long nb_of_philo;
-	long time_to_die;
-	long time_to_eat;
-	long time_to_sleep;
-	long time_each_philo_eat;
+	long	nb_of_philo;
+	long	time_to_die;
+	long	time_to_eat;
+	long	time_to_sleep;
+	long	time_each_philo_eat;
 
 	nb_of_philo = ft_atol(av[1]);
 	time_to_die = ft_atol(av[2]);
@@ -63,11 +64,17 @@ int parse_args(char **av)
 	if (av[5])
 		time_each_philo_eat = ft_atol(av[5]);
 	else
-		time_each_philo_eat = -1;
-	if (nb_of_philo > 200 || time_to_die < 60 || time_to_eat < 60 || time_to_sleep < 60)
+		time_each_philo_eat = 0;
+	if (nb_of_philo < 1 || nb_of_philo > 200 || time_to_die < 60
+		|| time_to_eat < 60 || time_to_sleep < 60 || (av[5]
+			&& time_each_philo_eat < 1))
 	{
 		if (nb_of_philo > 200)
 			printf("Error : too many philosophers\n");
+		else if (nb_of_philo < 1)
+			printf("Error : not enough philosophers\n");
+		else if (av[5] && time_each_philo_eat < 1)
+			printf("Error : number of time each philosopher must eat must be at least 1\n");
 		else
 			printf("Error : time must be at least 60ms\n");
 		return (1);
@@ -75,10 +82,10 @@ int parse_args(char **av)
 	return (0);
 }
 
-int ft_parse_params(int ac, char **av)
+int	ft_parse_params(int ac, char **av)
 {
-	int i;
-	int nb;
+	int	i;
+	int	nb;
 
 	i = 1;
 	while (i < ac)
@@ -94,9 +101,21 @@ int ft_parse_params(int ac, char **av)
 			printf("Error : argument out of range\n");
 			return (1);
 		}
-		else if (parse_args(av))
+		else if (ft_check_params(av))
 			return (1);
 		i++;
 	}
+	return (0);
+}
+
+int	ft_parse_args(int ac, char **av)
+{
+	if (ac < 5 || ac > 6)
+	{
+		printf("Error : wrong number of arguments\n");
+		return (1);
+	}
+	else if (ft_parse_params(ac, av))
+		return (1);
 	return (0);
 }

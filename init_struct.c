@@ -6,90 +6,58 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 03:31:11 by andjenna          #+#    #+#             */
-/*   Updated: 2024/09/26 05:58:19 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:12:49 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	init_mutex(t_prog *prog)
+int	ft_init_prog(t_prog *prog, int ac, char **av)
 {
-	int	i;
-
-	i = 0;
-	prog->philo->fork = malloc(sizeof(pthread_mutex_t) * prog->nb_of_philo);
-	if (!prog->philo->fork)
-	{
-		printf("Error : malloc failed\n");
-		return ;
-	}
-	while (i < prog->nb_of_philo)
-	{
-		pthread_mutex_init(&prog->philo->fork[i], NULL);
-		i++;
-	}
-}
-
-t_philo	*init_philo(char **av)
-{
-	t_philo	*philo;
-
-	philo = malloc(sizeof(t_philo));
-	if (!philo)
-	{
-		printf("Error : malloc failed\n");
-		return (NULL);
-	}
-	philo->tid = -1;
-	philo->death = 0;
-	if (av[5])
-		philo->nb_time_to_eat = ft_atol(av[5]);
-	else
-		philo->nb_time_to_eat = -1;
-	return (philo);
-}
-
-t_prog	*init_prog(char **av)
-{
-	t_prog	*prog;
-
-	prog = malloc(sizeof(t_prog));
-	if (!prog)
-	{
-		printf("Error : malloc failed\n");
-		return (NULL);
-	}
 	prog->nb_of_philo = ft_atol(av[1]);
 	prog->time_to_die = ft_atol(av[2]);
 	prog->time_to_eat = ft_atol(av[3]);
 	prog->time_to_sleep = ft_atol(av[4]);
-	pthread_mutex_init(&prog->print, NULL);
-	pthread_mutex_init(&prog->death, NULL);
-	pthread_mutex_init(&prog->data_lock, NULL);
-	prog->philo = init_philo(av);
-	init_mutex(prog);
-	return (prog);
+	prog->start.tv_sec = 0;
+	prog->start.tv_usec = 0;
+	prog->nb_time_to_eat = -1;
+	if (ac == 6)
+		prog->nb_time_to_eat = ft_atol(av[5]);
+	if (pthread_mutex_init(&prog->print, NULL) != 0)
+	{
+		printf("Error: mutex init failed\n");
+		return (1);
+	}
+	if (pthread_mutex_init(&prog->data, NULL) != 0)
+	{
+		printf("Error: mutex init failed\n");
+		return (1);
+	}
+	return (0);
 }
 
-void	free_prog(t_prog *prog)
+int	ft_init_philo(t_philo *philo, t_prog *prog)
 {
 	int	i;
 
 	i = 0;
 	while (i < prog->nb_of_philo)
 	{
-		pthread_mutex_destroy(&prog->philo->fork[i]);
+		philo[i].nb_time_to_eat = prog->nb_time_to_eat;
+		philo[i].has_eaten = 0;
+		philo[i].last_meal = 0;
+		philo[i].death = 0;
+		if (prog->nb_time_to_eat != -1)
+			philo[i].nb_time_to_eat = 0;
+		if (pthread_mutex_init(&philo[i].l_fork, NULL) != 0)
+		{
+			printf("Error: mutex init failed\n");
+			/*fonction qui destroy les mutex*/
+			return (1);
+		}
+		philo[i].r_fork = philo[(i + 1) % prog->nb_of_philo].l_fork;
 		i++;
 	}
-	free(prog->philo->fork);
-	free(prog->philo);
-	pthread_mutex_destroy(&prog->print);
-	pthread_mutex_destroy(&prog->death);
-	pthread_mutex_destroy(&prog->data_lock);
-	free(prog);
+	return (0);
 }
 
-// void	free_philo(t_philo *philo, int i)
-// {
-	
-// }

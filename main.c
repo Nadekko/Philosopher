@@ -6,99 +6,66 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 13:43:05 by andjenna          #+#    #+#             */
-/*   Updated: 2024/09/30 13:27:43 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:10:11 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
 // ./philosoher nb_of_philo time_to_die time_to_eat time_to_sleep [nb_of_time_each_philo_must_eat]
-// void	schedule_eat(t_prog *prog)
-// {
-// }
-
-void	schedule_eat(t_prog *prog)
+void	*routine(void *args)
 {
-	int	i;
-
-	i = 0;
-	while (i < prog->nb_of_philo)
-	{
-		pthread_mutex_lock(&prog->philo->fork[i]);
-		pthread_mutex_lock(&prog->philo->fork[(i + 1) % prog->nb_of_philo]);
-		pthread_mutex_lock(&prog->print);
-		printf("[%lu] is eating\n", prog->philo->tid);
-		pthread_mutex_unlock(&prog->print);
-		pthread_mutex_unlock(&prog->philo->fork[i]);
-		pthread_mutex_unlock(&prog->philo->fork[(i + 1) % prog->nb_of_philo]);
-		i++;
-	}
-	
-void	*routine(void *data)
-{
-	t_prog	*prog;
-	int		i;
-
-	prog = (t_prog *)data;
-	i = 0;
-	// schedule_eat(prog);
-	printf("Hello from philosopher [%lu]\n", prog->philo->tid);
-	pthread_mutex_lock(&prog->philo->fork[i]);
-	pthread_mutex_lock(&prog->philo->fork[(i + 1) % prog->nb_of_philo]);
-	printf("%sTID [%lu] is eating (๑ᵔ⤙ᵔ๑) %s\n", CYAN, prog->philo->tid, RESET);
-	pthread_mutex_unlock(&prog->philo->fork[i]);
-	pthread_mutex_unlock(&prog->philo->fork[(i + 1) % prog->nb_of_philo]);
-	printf("%sTID [%lu] stoped eating%s\n", PURPLE, prog->philo->tid, RESET);
-	printf("Goodbye from philosopher [%lu]\n", prog->philo->tid);
-	i++;
+	printf("Hello from thread %lu\n", ((t_philo *)args)->tid);
 	return (NULL);
 }
 
-void	test_pthread(t_prog *prog)
+void	start_simulation(t_philo *philo, t_prog *prog, pthread_t *supervisor)
 {
 	int	i;
 
-	i = 1;
-	while (i <= prog->nb_of_philo)
+	(void)supervisor;
+	i = 0;
+	while (i < prog->nb_of_philo)
 	{
-		if (pthread_create(&prog->philo->tid, NULL, &routine, prog) != 0)
+		if (pthread_create(&philo[i].tid, NULL, &routine, &philo[i]))
 		{
-			printf("Error : pthread_create failed\n");
+			printf("Error: pthread_create failed\n");
+			/* destory and free all*/
 			return ;
 		}
-		usleep(prog->time_to_eat * 1000);
 		i++;
 	}
-	while (i > 0)
+	i = 0;
+	while (i < prog->nb_of_philo)
 	{
-		pthread_join(prog->philo->tid, NULL);
-		i--;
+		if (pthread_join(philo[i].tid, NULL) != 0)
+		{
+			printf("Error: pthread_join failed\n");
+			/* destory and free all*/
+			return ;
+		}
+		i++;
 	}
-	return ;
 }
-
-int	main(int ac, char **av, char **env)
+int	main(int ac, char **av)
 {
-	t_prog	*prog;
+	t_prog		prog;
+	t_philo		*philo;
+	pthread_t	supervisor;
 
-	prog = NULL;
-	if (!env)
-		printf("Error : no environnement\n");
-	if (ac < 5 || ac > 6)
+	if (ft_parse_args(ac, av) || ft_init_prog(&prog, ac, av))
+		return (1);
+	philo = malloc(sizeof(t_philo) * prog.nb_of_philo);
+	if (!philo)
 	{
-		printf("Error : wrong number of arguments\n");
+		printf("Error: malloc failed\n");
 		return (1);
 	}
-	else
+	if (ft_init_philo(philo, &prog))
 	{
-		if (ft_parse_params(ac, av))
-			return (1);
-		else
-		{
-			prog = init_prog(av);
-			test_pthread(prog);
-		}
+		free(philo);
+		return (1);
 	}
-	free_prog(prog);
+	start_simulation(philo, &prog, &supervisor);
 	return (0);
 }
