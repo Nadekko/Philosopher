@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 03:31:11 by andjenna          #+#    #+#             */
-/*   Updated: 2024/09/30 18:12:49 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/10/10 18:14:51 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	ft_init_prog(t_prog *prog, int ac, char **av)
 	prog->time_to_die = ft_atol(av[2]);
 	prog->time_to_eat = ft_atol(av[3]);
 	prog->time_to_sleep = ft_atol(av[4]);
-	prog->start.tv_sec = 0;
-	prog->start.tv_usec = 0;
 	prog->nb_time_to_eat = -1;
 	if (ac == 6)
 		prog->nb_time_to_eat = ft_atol(av[5]);
@@ -28,6 +26,7 @@ int	ft_init_prog(t_prog *prog, int ac, char **av)
 		printf("Error: mutex init failed\n");
 		return (1);
 	}
+	prog->start = get_time_ms();
 	if (pthread_mutex_init(&prog->data, NULL) != 0)
 	{
 		printf("Error: mutex init failed\n");
@@ -43,9 +42,10 @@ int	ft_init_philo(t_philo *philo, t_prog *prog)
 	i = 0;
 	while (i < prog->nb_of_philo)
 	{
+		philo[i].id = i + 1;
 		philo[i].nb_time_to_eat = prog->nb_time_to_eat;
 		philo[i].has_eaten = 0;
-		philo[i].last_meal = 0;
+		philo[i].last_meal = prog->start;
 		philo[i].death = 0;
 		if (prog->nb_time_to_eat != -1)
 			philo[i].nb_time_to_eat = 0;
@@ -56,6 +56,7 @@ int	ft_init_philo(t_philo *philo, t_prog *prog)
 			return (1);
 		}
 		philo[i].r_fork = philo[(i + 1) % prog->nb_of_philo].l_fork;
+		philo[i].prog = prog;
 		i++;
 	}
 	return (0);

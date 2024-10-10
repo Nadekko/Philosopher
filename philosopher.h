@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 13:43:24 by andjenna          #+#    #+#             */
-/*   Updated: 2024/09/30 18:04:45 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/10/10 18:12:35 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@
 typedef struct s_philo
 {
 	pthread_t		tid;
+	int				id;
 	int				nb_time_to_eat;
 	int				has_eaten;
 	int				last_meal;
 	int				death;
 	pthread_mutex_t	l_fork;
 	pthread_mutex_t	r_fork;
-	// struct s_prog	*prog;
+	struct s_prog	*prog;
 }					t_philo;
 
 typedef struct s_prog
@@ -46,7 +47,7 @@ typedef struct s_prog
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nb_time_to_eat;
-	struct timeval	start;
+	int				start;
 	pthread_mutex_t	print;
 	pthread_mutex_t	data;
 	t_philo			*philo;
@@ -64,3 +65,6 @@ int					ft_init_philo(t_philo *philo, t_prog *prog);
 int					ft_init_prog(t_prog *prog, int ac, char **av);
 
 /*		FREE		*/
+
+/* IDK	*/
+int					get_time_ms(void);
