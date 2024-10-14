@@ -7,6 +7,10 @@ NAME = philo
 SRC = main.c \
 	parsing.c \
 	init_struct.c \
+	philosopher.c \
+	supervisor.c \
+	utils.c \
+	free.c \
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 03:31:11 by andjenna          #+#    #+#             */
-/*   Updated: 2024/10/10 18:14:51 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/10/14 17:40:07 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	ft_init_prog(t_prog *prog, int ac, char **av)
 		return (1);
 	}
 	prog->start = get_time_ms();
+	prog->death = 0;
 	if (pthread_mutex_init(&prog->data, NULL) != 0)
 	{
 		printf("Error: mutex init failed\n");
@@ -52,13 +53,12 @@ int	ft_init_philo(t_philo *philo, t_prog *prog)
 		if (pthread_mutex_init(&philo[i].l_fork, NULL) != 0)
 		{
 			printf("Error: mutex init failed\n");
-			/*fonction qui destroy les mutex*/
+			ft_free(prog);
 			return (1);
 		}
-		philo[i].r_fork = philo[(i + 1) % prog->nb_of_philo].l_fork;
+		philo[i].r_fork = &philo[(i + 1) % prog->nb_of_philo].l_fork;
 		philo[i].prog = prog;
 		i++;
 	}
 	return (0);
 }
-
