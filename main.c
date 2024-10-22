@@ -6,33 +6,20 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 13:43:05 by andjenna          #+#    #+#             */
-/*   Updated: 2024/10/14 17:38:46 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/10/19 18:57:19 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-// ./philosoher nb_of_philo time_to_die 
-// time_to_eat time_to_sleep 
+// ./philosoher nb_of_philo time_to_die
+// time_to_eat time_to_sleep
 // [nb_of_time_each_philo_must_eat]
 
-int	ft_set_death(t_philo *philo)
-{
-	if (philo->last_meal > philo->prog->time_to_die)
-	{
-		pthread_mutex_lock(&philo->prog->data);
-		philo->death = 1;
-		pthread_mutex_unlock(&philo->prog->data);
-		return (1);
-	}
-	return (0);
-}
-
-void	start_simulation(t_philo *philo, t_prog *prog, pthread_t *supervisor)
+void	start_simulation(t_philo *philo, t_prog *prog)
 {
 	int	i;
 
-	(void)supervisor;
 	i = 0;
 	while (i < prog->nb_of_philo)
 	{
@@ -57,16 +44,6 @@ void	start_simulation(t_philo *philo, t_prog *prog, pthread_t *supervisor)
 	}
 }
 
-void	ft_create_supervisor(pthread_t *supervisor, t_prog prog)
-{
-	if (pthread_create(supervisor, NULL, ft_supervisor_routine, &prog))
-	{
-		printf("Error: pthread_create failed\n");
-		ft_free(&prog);
-		return ;
-	}
-}
-
 int	main(int ac, char **av)
 {
 	t_prog		prog;
@@ -87,8 +64,8 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	prog.philo = philo;
-	// ft_create_supervisor(&supervisor, prog);
-	start_simulation(philo, &prog, &supervisor);
+	start_simulation(philo, &prog);
+	ft_create_supervisor(&supervisor, prog);
 	ft_free(&prog);
 	return (0);
 }

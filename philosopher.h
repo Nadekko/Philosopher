@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 13:43:24 by andjenna          #+#    #+#             */
-/*   Updated: 2024/10/14 17:41:45 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/10/19 18:40:45 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,12 @@ int					ft_init_philo(t_philo *philo, t_prog *prog);
 int					ft_init_prog(t_prog *prog, int ac, char **av);
 
 /*		UITLS		*/
-void				ft_printf_debug(t_prog *prog);
-void				ft_usleep(int time);
+// void				ft_printf_debug(t_prog *prog);
+void				ft_usleep(int time, t_philo *philo);
 int					get_time_ms(void);
 void				ft_print_msg(t_philo *philo, char *msg);
+int					get_value(int *value, pthread_mutex_t data);
+void				set_value(int *value, int new_value, pthread_mutex_t data);
 
 /*		PHILOSOPHER		*/
 void				*ft_routine(void *args);
@@ -79,11 +81,11 @@ int					ft_eat(t_philo *philo);
 
 /*		SUPERVISOR		*/
 void				*ft_supervisor_routine(void *args);
-int					get_value(int *vaue, pthread_mutex_t data);
+void				ft_create_supervisor(pthread_t *supervisor, t_prog prog);
 
 /*		FREE		*/
 void				ft_free(t_prog *prog);
 /* IDK	*/
 int					ft_set_death(t_philo *philo);
-
+int					ft_check_death(t_philo *philo);
 #endif

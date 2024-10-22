@@ -6,36 +6,23 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:36:34 by andjenna          #+#    #+#             */
-/*   Updated: 2024/10/14 17:39:43 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/10/19 18:40:37 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	ft_printf_debug(t_prog *prog)
-{
-	int	i;
-
-	printf("start: %d\n", prog->start);
-	printf("death: %d\n", prog->death);
-	i = 0;
-	while (i < prog->nb_of_philo)
-	{
-		printf("philo id: %d\n", prog->philo[i].id);
-		printf("philo death: %d\n", prog->philo[i].death);
-		printf("philo has_eaten: %d\n", prog->philo[i].has_eaten);
-		printf("philo last_meal: %d\n", prog->philo[i].last_meal);
-		i++;
-	}
-}
-
-void	ft_usleep(int time)
+void	ft_usleep(int time, t_philo *philo)
 {
 	int	start;
 
 	start = get_time_ms();
 	while (get_time_ms() - start < time)
+	{
+		if (ft_check_death(philo))
+			break ;
 		usleep(time / 10);
+	}
 }
 
 int	get_time_ms(void)
