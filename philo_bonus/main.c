@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:09:11 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/02 17:24:03 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:35:12 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,9 @@ void	start_simulation(t_philo *philo, t_prog *prog)
 		{
 			if (prog->death->__align != 1)
 			{
-				printf("%s%d %d %s%s\n", PURPLE, get_time_ms() - philo->prog->start,
-					philo[i].id, "died", RESET);
+				printf("%s%d %d %s%s\n", PURPLE, get_time_ms()
+					- philo->prog->start, philo[i].id, "died", RESET);
 			}
-			// if (prog->has_eaten == prog->nb_time_to_eat)
-			// {
-			// 	printf("philo[%d].%d->nb_eaten = %d\n", i, philo[i].id, philo[i].nb_eaten);
-			// 	printf("%sAll philosophers have eaten %d times%s\n", YELLOW, prog->nb_time_to_eat, RESET);
-			// }
-			// printf("Philosophe %d a terminé avec le code %d\n", philo[i].id, WEXITSTATUS(status));
 			terminate_process(prog);
 			break ;
 		}
@@ -89,6 +83,6 @@ int	main(int ac, char **av)
 	prog.start = get_time_ms();
 	philo->last_meal = prog.start;
 	start_simulation(philo, &prog);
-	ft_free(&prog, philo);
+	free(philo);
 	return (0);
 }

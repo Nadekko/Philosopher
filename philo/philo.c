@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:36:10 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/02 16:44:57 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:30:35 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static void	ft_think(t_philo *philo)
 	if (get_value(&philo->prog->nb_of_philo, &philo->prog->data) % 2 != 0)
 	{
 		pthread_mutex_lock(&philo->prog->data);
-		time_to_think = (philo->prog->time_to_eat - philo->prog->time_to_sleep) + 1;
+		time_to_think = (philo->prog->time_to_eat - philo->prog->time_to_sleep)
+			+ 1;
 		pthread_mutex_unlock(&philo->prog->data);
 		ft_usleep(time_to_think, philo);
 	}

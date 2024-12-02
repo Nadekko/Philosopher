@@ -9,7 +9,7 @@ SRC = main.c \
 	parsing.c \
 	philo.c \
 	utils.c \
-	ft_free.c \
+	utils2.c \
 
 OBJ = $(SRC:.c=.o)
 

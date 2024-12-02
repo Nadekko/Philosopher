@@ -6,19 +6,29 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 15:33:50 by andjenna          #+#    #+#             */
-/*   Updated: 2024/11/30 20:20:46 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:33:10 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void ft_print_msg(t_philo *philo, char *msg)
+void	ft_clean_sem(t_prog *prog)
 {
-	int time;
+	sem_close(prog->forks);
+	sem_close(prog->print);
+	sem_close(prog->death);
+	sem_unlink("forks");
+	sem_unlink("print");
+	sem_unlink("death");
+}
+
+void	ft_print_msg(t_philo *philo, char *msg)
+{
+	int	time;
 
 	time = get_time_ms() - philo->prog->start;
 	if (ft_check_death(philo) == 1 || ft_check_nb_eaten(philo) == 1)
-		return;
+		return ;
 	sem_wait(philo->prog->print);
 	printf("%d %d %s\n", time, philo->id, msg);
 	sem_post(philo->prog->print);
@@ -46,9 +56,9 @@ int	get_time_ms(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void terminate_process(t_prog *prog)
+void	terminate_process(t_prog *prog)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	ft_clean_sem(prog);
