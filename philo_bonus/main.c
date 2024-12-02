@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:09:11 by andjenna          #+#    #+#             */
-/*   Updated: 2024/11/30 20:10:39 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:24:03 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	main(int ac, char **av)
 	prog.start = get_time_ms();
 	philo->last_meal = prog.start;
 	start_simulation(philo, &prog);
-	// ft_clean_sem(&prog);
 	ft_free(&prog, philo);
 	return (0);
 }

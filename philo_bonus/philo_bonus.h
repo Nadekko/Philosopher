@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:19:30 by andjenna          #+#    #+#             */
-/*   Updated: 2024/11/30 20:20:52 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:24:47 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,12 @@ typedef struct s_prog
 	int time_to_sleep;
 	int nb_time_to_eat;
 	int start;
-	int has_eaten;
+	int nb_has_eaten;
 	int death_flag;
 	sem_t *forks;
 	sem_t *print;
 	sem_t *death;
+	// sem_t *has_eaten;
 	t_philo *philo;
 } t_prog;
 
