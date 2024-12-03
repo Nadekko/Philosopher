@@ -6,29 +6,11 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:44:45 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 13:41:25 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:10:23 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	ft_check_death(t_philo *philo)
-{
-	if (get_value(&philo->prog->death, &philo->prog->data) == 1)
-		return (1);
-	return (0);
-}
-
-int	ft_check_has_eaten(t_philo *philo)
-{
-	if (philo->prog->nb_time_to_eat != -1)
-	{
-		if (get_value(&philo->prog->has_eaten,
-						&philo->prog->data) == philo->prog->nb_time_to_eat)
-			return (1);
-	}
-	return (0);
-}
 
 static int	ft_strcmp(char *s1, char *s2)
 {
@@ -53,19 +35,4 @@ void	ft_print_msg(t_philo *philo, char *msg)
 	else
 		printf("%d %d %s\n", time, philo->id, msg);
 	pthread_mutex_unlock(&philo->prog->print);
-}
-
-void	ft_free(t_prog *prog)
-{
-	int	i;
-
-	i = 0;
-	while (i < prog->nb_of_philo)
-	{
-		pthread_mutex_destroy(&prog->philo[i].l_fork);
-		i++;
-	}
-	pthread_mutex_destroy(&prog->print);
-	pthread_mutex_destroy(&prog->data);
-	free(prog->philo);
 }

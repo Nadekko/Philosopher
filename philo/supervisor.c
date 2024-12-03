@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:39:24 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/02 17:30:41 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:10:14 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,22 @@ void	*ft_supervisor_routine(void *args)
 		}
 	}
 	return (NULL);
+}
+
+int	ft_check_death(t_philo *philo)
+{
+	if (get_value(&philo->prog->death, &philo->prog->data) == 1)
+		return (1);
+	return (0);
+}
+
+int	ft_check_has_eaten(t_philo *philo)
+{
+	if (philo->prog->nb_time_to_eat != -1)
+	{
+		if (get_value(&philo->prog->has_eaten,
+				&philo->prog->data) == philo->prog->nb_time_to_eat)
+			return (1);
+	}
+	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 13:43:05 by andjenna          #+#    #+#             */
-/*   Updated: 2024/11/25 23:48:24 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:09:39 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_join(t_philo *philo, t_prog *prog, pthread_t supervisor)
+static void	ft_join(t_philo *philo, t_prog *prog, pthread_t supervisor)
 {
 	int	i;
 
@@ -35,7 +35,8 @@ void	ft_join(t_philo *philo, t_prog *prog, pthread_t supervisor)
 	}
 }
 
-void	start_simulation(t_philo *philo, t_prog *prog, pthread_t *supervisor)
+static void	start_simulation(t_philo *philo, t_prog *prog,
+		pthread_t *supervisor)
 {
 	int	i;
 
@@ -45,7 +46,7 @@ void	start_simulation(t_philo *philo, t_prog *prog, pthread_t *supervisor)
 		if (pthread_create(&philo[i].tid, NULL, ft_routine, &philo[i]))
 		{
 			printf("Error: pthread_create failed\n");
-			ft_free(prog);
+			ft_error_free(prog, philo, i);
 			return ;
 		}
 		i++;
@@ -53,7 +54,8 @@ void	start_simulation(t_philo *philo, t_prog *prog, pthread_t *supervisor)
 	if (pthread_create(supervisor, NULL, ft_supervisor_routine, prog))
 	{
 		printf("Error: pthread_create failed\n");
-		ft_free(prog);
+		pthread_detach(*supervisor);
+		ft_error_free(prog, philo, i);
 		return ;
 	}
 	ft_join(philo, prog, *supervisor);
@@ -83,13 +85,11 @@ int	main(int ac, char **av)
 	if (!philo)
 	{
 		printf("Error: malloc failed\n");
+		destroy_mutex(&prog, -1);
 		return (1);
 	}
 	if (ft_init_philo(philo, &prog))
-	{
-		free(philo);
 		return (1);
-	}
 	prog.philo = philo;
 	prog.start = get_time_ms();
 	philo->last_meal = prog.start;

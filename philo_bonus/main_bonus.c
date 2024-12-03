@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:31:05 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 13:31:07 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:21:46 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static void	start_simulation(t_philo *philo, t_prog *prog)
 		if (philo[i].pid == -1)
 		{
 			printf("Error : fork failed\n");
+			ft_clean_sem(prog);
 			while (i--)
 				kill(philo[i].pid, SIGKILL);
 			return ;
@@ -71,6 +72,16 @@ static int	ft_parse_args(int ac, char **av)
 	return (0);
 }
 
+void	ft_clean_sem(t_prog *prog)
+{
+	sem_close(prog->forks);
+	sem_close(prog->print);
+	sem_close(prog->death);
+	sem_unlink("forks");
+	sem_unlink("print");
+	sem_unlink("death");
+}
+
 int	main(int ac, char **av)
 {
 	t_prog	prog;
@@ -81,8 +92,8 @@ int	main(int ac, char **av)
 	philo = malloc(sizeof(t_philo) * prog.nb_of_philo);
 	if (!philo)
 	{
-		ft_clean_sem(&prog);
 		printf("Error : malloc failed\n");
+		ft_clean_sem(&prog);
 		return (1);
 	}
 	ft_init_philo(philo, &prog);

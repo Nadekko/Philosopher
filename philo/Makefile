@@ -11,6 +11,7 @@ SRC = main.c \
 	supervisor.c \
 	utils.c \
 	utils2.c \
+	free.c \
 
 OBJ = $(SRC:.c=.o)
 

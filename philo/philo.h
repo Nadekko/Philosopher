@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 13:43:24 by andjenna          #+#    #+#             */
-/*   Updated: 2024/11/12 11:20:29 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:58:15 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,7 @@ void				*ft_supervisor_routine(void *args);
 
 /*		FREE		*/
 void				ft_free(t_prog *prog);
+void				ft_error_free(t_prog *prog, t_philo *philo, int i);
+void				destroy_mutex(t_prog *prog, int i);
 
 #endif

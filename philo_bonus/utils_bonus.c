@@ -6,21 +6,11 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:31:21 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 13:31:24 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:15:16 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-void	ft_clean_sem(t_prog *prog)
-{
-	sem_close(prog->forks);
-	sem_close(prog->print);
-	sem_close(prog->death);
-	sem_unlink("forks");
-	sem_unlink("print");
-	sem_unlink("death");
-}
 
 void	ft_usleep(int time, t_philo *philo)
 {
