@@ -6,35 +6,19 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:09:11 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/02 17:35:12 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:09:25 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	start_simulation(t_philo *philo, t_prog *prog)
+static void	monitor_processes(t_philo *philo, t_prog *prog)
 {
 	int	i;
 	int	status;
 
 	i = 0;
 	status = 0;
-	while (i < prog->nb_of_philo)
-	{
-		philo[i].pid = fork();
-		if (philo[i].pid == -1)
-		{
-			printf("Error : fork failed\n");
-			while (i--)
-				kill(philo[i].pid, SIGKILL);
-			return ;
-		}
-		else if (philo[i].pid == 0)
-			ft_routine(&philo[i]);
-		usleep(1000);
-		i++;
-	}
-	i = 0;
 	while (i < prog->nb_of_philo)
 	{
 		waitpid(philo[i].pid, &status, 0);
@@ -50,6 +34,29 @@ void	start_simulation(t_philo *philo, t_prog *prog)
 		}
 		i++;
 	}
+}
+
+static void	start_simulation(t_philo *philo, t_prog *prog)
+{
+	int	i;
+
+	i = 0;
+	while (i < prog->nb_of_philo)
+	{
+		philo[i].pid = fork();
+		if (philo[i].pid == -1)
+		{
+			printf("Error : fork failed\n");
+			while (i--)
+				kill(philo[i].pid, SIGKILL);
+			return ;
+		}
+		else if (philo[i].pid == 0)
+			ft_routine(&philo[i]);
+		usleep(1000);
+		i++;
+	}
+	monitor_processes(philo, prog);
 }
 
 static int	ft_parse_args(int ac, char **av)

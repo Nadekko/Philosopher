@@ -1,7 +1,7 @@
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -g3 
-# -fsanitize=memory
+CFLAGS = -Wall -Werror -Wextra -g3 # -fsanitize=memory
+
 NAME = philo_bonus
 
 SRC = main.c \
