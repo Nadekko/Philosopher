@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 13:43:05 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 17:09:39 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:58:48 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	ft_join(t_philo *philo, t_prog *prog, pthread_t supervisor)
 		if (pthread_join(philo[i].tid, NULL) != 0)
 		{
 			printf("Error: pthread_join failed\n");
-			ft_free(prog);
+			ft_error_free(philo, i);
 			return ;
 		}
 		i++;
@@ -30,7 +30,7 @@ static void	ft_join(t_philo *philo, t_prog *prog, pthread_t supervisor)
 	if (pthread_join(supervisor, NULL) != 0)
 	{
 		printf("Error: pthread_join failed\n");
-		ft_free(prog);
+		pthread_detach(supervisor);
 		return ;
 	}
 }
@@ -43,10 +43,10 @@ static void	start_simulation(t_philo *philo, t_prog *prog,
 	i = 0;
 	while (i < prog->nb_of_philo)
 	{
-		if (pthread_create(&philo[i].tid, NULL, ft_routine, &philo[i]))
+		if (pthread_create(&philo[i].tid, NULL, ft_routine, &philo[i]) != 0)
 		{
 			printf("Error: pthread_create failed\n");
-			ft_error_free(prog, philo, i);
+			ft_error_free(philo, i);
 			return ;
 		}
 		i++;
@@ -55,7 +55,7 @@ static void	start_simulation(t_philo *philo, t_prog *prog,
 	{
 		printf("Error: pthread_create failed\n");
 		pthread_detach(*supervisor);
-		ft_error_free(prog, philo, i);
+		ft_error_free(philo, i);
 		return ;
 	}
 	ft_join(philo, prog, *supervisor);
