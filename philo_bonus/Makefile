@@ -4,12 +4,12 @@ CFLAGS = -Wall -Werror -Wextra -g3 # -fsanitize=memory
 
 NAME = philo_bonus
 
-SRC = main.c \
-	init_struct.c \
-	parsing.c \
-	philo.c \
-	utils.c \
-	utils2.c \
+SRC = main_bonus.c \
+	init_struct_bonus.c \
+	parsing_bonus.c \
+	philo_bonus.c \
+	utils_bonus.c \
+	utils2_bonus.c \
 
 OBJ = $(SRC:.c=.o)
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   utils2_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 17:37:27 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 12:21:38 by andjenna         ###   ########.fr       */
+/*   Created: 2024/12/03 13:31:27 by andjenna          #+#    #+#             */
+/*   Updated: 2024/12/03 13:39:01 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,10 @@ void	ft_print_msg(t_philo *philo, char *msg)
 	if (ft_strcmp(msg, "is eating") == 0)
 	{
 		printf("%s%d %d %s%s\n", YELLOW, get_time_ms() - philo->prog->start,
-			philo->id, "is eating", RESET);
+				philo->id, "is eating", RESET);
 	}
 	else
 		printf("%d %d %s\n", time, philo->id, msg);
 	sem_post(philo->prog->print);
 }
+// fflush(stdout);
