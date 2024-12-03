@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:31:27 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 13:39:01 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/03 13:49:50 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,11 @@ void	ft_print_msg(t_philo *philo, char *msg)
 		printf("%d %d %s\n", time, philo->id, msg);
 	sem_post(philo->prog->print);
 }
+
+/*Chaque process enfant écrit sa propre sortie,
+Lorsque la sortie est redirigée vers un pipe,
+le mode bufferisé change(mode "block buffer"),
+ce qui peut entraîner des retards ou des pertes de sorties 
+si chaque processus ne vide pas explicitement son buffer.*/
+
 // fflush(stdout);
