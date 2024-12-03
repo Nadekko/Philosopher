@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 13:43:05 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 18:58:48 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:59:29 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(int ac, char **av)
 	if (!philo)
 	{
 		printf("Error: malloc failed\n");
-		destroy_mutex(&prog, -1);
+		destroy_mutex(&prog, prog->nb_of_philo);
 		return (1);
 	}
 	if (ft_init_philo(philo, &prog))
