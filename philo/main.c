@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 13:43:05 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 18:59:57 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:00:10 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,9 @@ static void	start_simulation(t_philo *philo, t_prog *prog,
 		}
 		i++;
 	}
-	if (pthread_create(supervisor, NULL, ft_supervisor_routine, prog))
+	if (pthread_create(supervisor, NULL, ft_supervisor_routine, prog) != 0)
 	{
 		printf("Error: pthread_create failed\n");
-		pthread_detach(*supervisor);
 		ft_error_free(philo, i);
 		return ;
 	}
@@ -85,7 +84,7 @@ int	main(int ac, char **av)
 	if (!philo)
 	{
 		printf("Error: malloc failed\n");
-		destroy_mutex(&prog, prog.nb_of_philo);
+		destroy_mutex(&prog, 0);
 		return (1);
 	}
 	if (ft_init_philo(philo, &prog))
