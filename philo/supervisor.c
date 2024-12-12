@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:39:24 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 17:10:14 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/12 22:02:05 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static int	ft_set_death(t_prog *prog)
 		{
 			set_value(&prog->death, 1, &prog->data);
 			pthread_mutex_lock(&prog->print);
-			printf("%s%d %d died%s\n", PURPLE, time, prog->philo[i].id, RESET);
+			// printf("%s%d %d died%s\n", PURPLE, time, prog->philo[i].id, RESET);
+			printf("%d %d died\n", time, prog->philo[i].id);
 			pthread_mutex_unlock(&prog->print);
 			return (1);
 		}

@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:31:05 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 17:21:46 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/12 22:23:42 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ static void	monitor_processes(t_philo *philo, t_prog *prog)
 		{
 			if (prog->death->__align != 1)
 			{
-				printf("%s%d %d %s%s\n", PURPLE, get_time_ms()
-					- philo->prog->start, philo[i].id, "died", RESET);
+				// printf("%s%d %d %s%s\n", PURPLE, get_time_ms()
+				// 	- philo->prog->start, philo[i].id, "died", RESET);
+				printf("%d %d %s\n", get_time_ms() - philo->prog->start, philo->id, "died");
 			}
 			terminate_process(prog);
 			break ;

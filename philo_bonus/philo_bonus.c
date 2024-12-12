@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:31:17 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 13:31:19 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/12 22:26:47 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_sleep(t_philo *philo)
 {
-	if (!ft_check_nb_eaten(philo))
-		return ;
+	if (!ft_check_nb_eaten(philo) || !ft_check_death(philo))
+		return;
 	ft_print_msg(philo, "is sleeping");
 	ft_usleep(philo->prog->time_to_sleep, philo);
 }
@@ -24,10 +24,15 @@ void	ft_think(t_philo *philo)
 {
 	int	time;
 
-	if (!ft_check_nb_eaten(philo))
-		return ;
+	if (!ft_check_nb_eaten(philo) || !ft_check_death(philo))
+		return;
 	ft_print_msg(philo, "is thinking");
-	if (philo->prog->nb_of_philo % 2 != 0)
+	if (philo->prog->nb_of_philo % 2 == 0)
+	{
+		time = philo->prog->time_to_eat / 2;
+		ft_usleep(time, philo);
+	}
+	else
 	{
 		time = philo->prog->time_to_eat - philo->prog->time_to_sleep + 1;
 		ft_usleep(time, philo);
@@ -62,7 +67,6 @@ void	ft_routine(t_philo *philo)
 		{
 			sem_wait(philo->prog->forks);
 			ft_print_msg(philo, "has taken a fork");
-			philo->last_meal = get_time_ms();
 			while (ft_check_death(philo))
 				;
 		}

@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:36:10 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/02 17:30:35 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/12 22:10:02 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	*ft_routine(void *args)
 
 	philo = (t_philo *)args;
 	if (philo->id % 2 == 0)
-		usleep(1500);
+		usleep(philo->prog->time_to_eat * 500);
 	while (!ft_check_death(philo) && !ft_check_has_eaten(philo))
 	{
 		if (get_value(&philo->prog->nb_of_philo, &philo->prog->data) == 1)
