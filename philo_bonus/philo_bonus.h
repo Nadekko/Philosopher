@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:19:30 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/02 17:40:42 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:07:15 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@ typedef struct s_prog
 	int				start;
 	int				nb_has_eaten;
 	int				death_flag;
+	int				forks_available;
 	sem_t			*forks;
 	sem_t			*print;
 	sem_t			*death;
+	sem_t			*meal_lock;
 	t_philo			*philo;
 }					t_prog;
 

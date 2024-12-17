@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:31:21 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/03 17:15:16 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:51:10 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_usleep(int time, t_philo *philo)
 	start = get_time_ms();
 	while (get_time_ms() - start < time)
 	{
-		if (!ft_check_death(philo))
+		if (ft_check_death(philo) == 0)
 			break ;
 		usleep(100);
 	}
@@ -39,10 +39,10 @@ void	terminate_process(t_prog *prog)
 	int	i;
 
 	i = 0;
-	ft_clean_sem(prog);
 	while (i < prog->nb_of_philo)
 	{
 		kill(prog->philo[i].pid, SIGKILL);
 		i++;
 	}
+	ft_clean_sem(prog);
 }

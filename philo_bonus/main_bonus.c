@@ -6,7 +6,7 @@
 /*   By: andjenna <andjenna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:31:05 by andjenna          #+#    #+#             */
-/*   Updated: 2024/12/12 22:23:42 by andjenna         ###   ########.fr       */
+/*   Updated: 2024/12/17 19:09:12 by andjenna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,13 @@ static void	monitor_processes(t_philo *philo, t_prog *prog)
 	while (i < prog->nb_of_philo)
 	{
 		waitpid(philo[i].pid, &status, 0);
-		if (WIFEXITED(status) == 1 && WEXITSTATUS(status) == 0)
+		if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 		{
-			if (prog->death->__align != 1)
+			if (prog->death->__align > 0 || prog->meal_lock->__align == prog->nb_of_philo)
 			{
-				// printf("%s%d %d %s%s\n", PURPLE, get_time_ms()
-				// 	- philo->prog->start, philo[i].id, "died", RESET);
-				printf("%d %d %s\n", get_time_ms() - philo->prog->start, philo->id, "died");
+				terminate_process(prog);
+				break ;
 			}
-			terminate_process(prog);
-			break ;
 		}
 		i++;
 	}
@@ -55,7 +52,7 @@ static void	start_simulation(t_philo *philo, t_prog *prog)
 		}
 		else if (philo[i].pid == 0)
 			ft_routine(&philo[i]);
-		usleep(1000);
+		usleep(500 + (prog->nb_of_philo * 10));
 		i++;
 	}
 	monitor_processes(philo, prog);
@@ -78,9 +75,11 @@ void	ft_clean_sem(t_prog *prog)
 	sem_close(prog->forks);
 	sem_close(prog->print);
 	sem_close(prog->death);
+	sem_close(prog->meal_lock);
 	sem_unlink("forks");
 	sem_unlink("print");
 	sem_unlink("death");
+	sem_unlink("meal_lock");
 }
 
 int	main(int ac, char **av)
